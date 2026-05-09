@@ -13,6 +13,7 @@
       nav { display: flex; flex-wrap: wrap; gap: 8px; }
       button { border: 1px solid #c8d2dc; background: #fff; border-radius: 6px; padding: 8px 10px; cursor: pointer; }
       button.active { background: #172026; color: white; }
+      .viz-controls { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
       .grid { display: grid; grid-template-columns: minmax(280px, 1fr) minmax(280px, 1.3fr); gap: 16px; margin-top: 18px; }
       article, section { padding: 16px; }
       .metric { background: #f8fbff; border: 1px solid #d9e0e7; border-radius: 6px; padding: 10px; margin: 8px 0; }
@@ -39,6 +40,11 @@
         </article>
         <section>
           <canvas id="viz" width="900" height="420" aria-label="HydroOnc visualization canvas"></canvas>
+          <div id="quantumControls" class="viz-controls" aria-label="Orbital controls">
+            <button data-orbital="1s" class="active">1s</button>
+            <button data-orbital="2p">2p</button>
+            <button data-orbital="3d">3d</button>
+          </div>
         </section>
       </div>
     </main>
@@ -55,13 +61,24 @@
       const title = document.getElementById("title");
       const metrics = document.getElementById("metrics");
       const caveats = document.getElementById("caveats");
+      const quantumControls = document.getElementById("quantumControls");
       const ctx = document.getElementById("viz").getContext("2d");
       let active = 0;
+      let orbital = "1s";
+      let frame = 0;
       pages.forEach((page, i) => {
         const button = document.createElement("button");
         button.textContent = page[0];
         button.onclick = () => render(i);
         nav.appendChild(button);
+      });
+      quantumControls.addEventListener("click", (event) => {
+        if (!event.target.dataset.orbital) return;
+        orbital = event.target.dataset.orbital;
+        [...quantumControls.children].forEach((button) => {
+          button.className = button.dataset.orbital === orbital ? "active" : "";
+        });
+        draw(0);
       });
       function render(i) {
         active = i;
@@ -69,9 +86,14 @@
         title.textContent = pages[i][0];
         metrics.innerHTML = pages[i][1].map(x => `<div class="metric">${x}</div>`).join("");
         caveats.innerHTML = (pages[i][2].length ? pages[i][2] : ["No additional caveat beyond research-use status."]).map(x => `<div class="caveat">${x}</div>`).join("");
+        quantumControls.style.display = i === 0 ? "flex" : "none";
         draw(i);
       }
       function draw(i) {
+        if (i === 0) {
+          drawQuantum();
+          return;
+        }
         ctx.clearRect(0, 0, 900, 420);
         for (let x = 0; x < 900; x += 12) {
           const y = 220 - Math.sin((x / 80) + i) * (40 + i * 8);
@@ -82,7 +104,139 @@
         ctx.font = "24px system-ui";
         ctx.fillText(pages[i][0], 24, 42);
       }
+      function drawQuantum() {
+        ctx.clearRect(0, 0, 900, 420);
+        const angle = frame * 0.012;
+        const pitch = 0.55;
+        const center = { x: 450, y: 220 };
+        const points = orbitalPoints(orbital);
+
+        const gradient = ctx.createLinearGradient(0, 0, 900, 420);
+        gradient.addColorStop(0, "#06101f");
+        gradient.addColorStop(1, "#132b3d");
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, 900, 420);
+
+        drawOrbitRing(155, angle, pitch, "rgba(136, 196, 255, 0.22)");
+        drawOrbitRing(112, angle + 1.1, -pitch * 0.7, "rgba(255, 255, 255, 0.16)");
+
+        points
+          .map((point) => project(point, angle, pitch, center))
+          .sort((a, b) => a.z - b.z)
+          .forEach((point) => {
+            const alpha = Math.max(0.16, Math.min(0.88, 0.42 + point.z / 520));
+            ctx.beginPath();
+            ctx.fillStyle = point.phase > 0
+              ? `rgba(73, 168, 255, ${alpha})`
+              : `rgba(255, 96, 116, ${alpha})`;
+            ctx.arc(point.x, point.y, point.r, 0, Math.PI * 2);
+            ctx.fill();
+          });
+
+        const nucleus = ctx.createRadialGradient(center.x - 8, center.y - 10, 4, center.x, center.y, 34);
+        nucleus.addColorStop(0, "#fff8d1");
+        nucleus.addColorStop(0.35, "#ffb84d");
+        nucleus.addColorStop(1, "rgba(255, 112, 67, 0.14)");
+        ctx.fillStyle = nucleus;
+        ctx.beginPath();
+        ctx.arc(center.x, center.y, 34, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = "#fff7dd";
+        ctx.font = "13px system-ui";
+        ctx.fillText("p+", center.x - 8, center.y + 5);
+
+        const electron = project({ x: 155 * Math.cos(frame * 0.028), y: 0, z: 155 * Math.sin(frame * 0.028), phase: 1 }, angle, pitch, center);
+        ctx.fillStyle = "#bfe7ff";
+        ctx.beginPath();
+        ctx.arc(electron.x, electron.y, 7, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = "white";
+        ctx.font = "24px system-ui";
+        ctx.fillText(`Hydrogen ${orbital} orbital`, 24, 42);
+        ctx.font = "14px system-ui";
+        ctx.fillStyle = "rgba(255,255,255,0.75)";
+        ctx.fillText("rotating 3D projection: nucleus, electron path, probability cloud", 24, 66);
+      }
+      function drawOrbitRing(radius, angle, pitch, color) {
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        for (let i = 0; i <= 160; i++) {
+          const t = (Math.PI * 2 * i) / 160;
+          const point = project({ x: radius * Math.cos(t), y: radius * Math.sin(t), z: 0, phase: 1 }, angle, pitch, { x: 450, y: 220 });
+          if (i === 0) ctx.moveTo(point.x, point.y);
+          else ctx.lineTo(point.x, point.y);
+        }
+        ctx.stroke();
+      }
+      function project(point, yaw, pitch, center) {
+        const cy = Math.cos(yaw), sy = Math.sin(yaw);
+        const cp = Math.cos(pitch), sp = Math.sin(pitch);
+        const x1 = point.x * cy - point.z * sy;
+        const z1 = point.x * sy + point.z * cy;
+        const y2 = point.y * cp - z1 * sp;
+        const z2 = point.y * sp + z1 * cp;
+        const scale = 520 / (520 + z2);
+        return {
+          x: center.x + x1 * scale,
+          y: center.y + y2 * scale,
+          z: z2,
+          r: Math.max(1.2, 3.4 * scale),
+          phase: point.phase
+        };
+      }
+      function orbitalPoints(kind) {
+        const points = [];
+        if (kind === "1s") {
+          for (let i = 0; i < 520; i++) {
+            const t = i / 520;
+            const theta = Math.acos(1 - 2 * ((i * 0.61803398875) % 1));
+            const phi = i * 2.39996323;
+            const radius = 28 + 142 * Math.pow(t, 0.55);
+            points.push({
+              x: radius * Math.sin(theta) * Math.cos(phi),
+              y: radius * Math.sin(theta) * Math.sin(phi),
+              z: radius * Math.cos(theta),
+              phase: 1
+            });
+          }
+        } else if (kind === "2p") {
+          for (let i = 0; i < 560; i++) {
+            const sign = i % 2 === 0 ? 1 : -1;
+            const phi = i * 2.39996323;
+            const ring = 32 + 70 * ((i % 97) / 97);
+            const z = sign * (58 + 112 * ((i % 113) / 113));
+            points.push({
+              x: ring * Math.cos(phi) * (1 - Math.abs(z) / 260),
+              y: ring * Math.sin(phi) * (1 - Math.abs(z) / 260),
+              z,
+              phase: sign
+            });
+          }
+        } else {
+          for (let i = 0; i < 720; i++) {
+            const lobe = i % 4;
+            const sign = lobe < 2 ? 1 : -1;
+            const base = [0, Math.PI / 2, Math.PI, (3 * Math.PI) / 2][lobe];
+            const spread = ((i % 89) / 89 - 0.5) * 0.9;
+            const radius = 58 + 110 * ((i % 131) / 131);
+            points.push({
+              x: radius * Math.cos(base + spread),
+              y: radius * Math.sin(base + spread),
+              z: 62 * Math.sin(spread * 2),
+              phase: sign
+            });
+          }
+        }
+        return points;
+      }
+      function animate() {
+        frame += 1;
+        if (active === 0) drawQuantum();
+        requestAnimationFrame(animate);
+      }
       render(0);
+      animate();
     </script>
   </body>
 </html>
