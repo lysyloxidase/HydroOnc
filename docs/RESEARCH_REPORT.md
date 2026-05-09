@@ -14,3 +14,15 @@ chosen to reproduce the experimental value within the Phase 2 quality gate.
 Tumor extracellular pH is represented by `pH = 6.7`; normal extracellular
 comparisons use `pH = 7.4`. Histidine protonation therefore changes strongly
 across the simulated tumor-normal pH contrast.
+
+## Phase 3 Tumor pH
+
+The Warburg module calibrates aerobic glycolysis and pH-regulator export so
+extracellular pH drops from `7.4` toward `6.7` over one simulated hour, while
+intracellular pH remains near `7.0-7.2`. NHE1 inhibition lowers intracellular pH
+by about `0.2-0.3` units, and CAIX inhibition raises extracellular pH toward the
+normal tissue range.
+
+The reaction-diffusion module represents an acidic tumor core around `pH 6.5`
+and a vascular boundary around `pH 7.3`. A finite-difference fallback preserves
+the FEniCS-facing API for local testing and CI.
