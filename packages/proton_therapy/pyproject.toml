@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hydroonc-proton-therapy"
+version = "0.1.0"
+description = "Phase 4 proton therapy simulation for HydroOnc: Bragg peak, LET/RBE, FLASH, ML dose prediction, and planning helpers."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [
+  { name = "HydroOnc Contributors" }
+]
+dependencies = [
+  "numpy>=1.23"
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=7.4"
+]
+ml = [
+  "torch>=2.0"
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"

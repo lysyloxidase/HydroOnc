@@ -12,3 +12,7 @@ geometry analysis, and pKa benchmark checks.
 Phase 3 lives in `packages/tumor_ph`. It models tumor acidosis from Warburg
 glycolysis and pH regulators, solves tumor core-to-boundary pH gradients, and
 provides CEST-MRI pH mapping surfaces for later API and web visualization work.
+
+Phase 4 lives in `packages/proton_therapy`. It covers Bragg peak physics,
+spread-out Bragg peaks, LET/RBE modeling, FLASH dose-rate response, DVH metrics,
+ML dose prediction, and PPO-style automated planning interfaces.

@@ -26,3 +26,15 @@ normal tissue range.
 The reaction-diffusion module represents an acidic tumor core around `pH 6.5`
 and a vascular boundary around `pH 7.3`. A finite-difference fallback preserves
 the FEniCS-facing API for local testing and CI.
+
+## Phase 4 Proton Therapy
+
+Clinical proton energies span roughly `70-250 MeV`, corresponding to water
+ranges from about `4.0 cm` to `37.7 cm`. HydroOnc calibrates the Bragg peak
+module to place a `150 MeV` pristine peak near `15.6 cm` in water and uses
+PSTAR-style mass stopping power references for quality gates.
+
+The RBE module keeps the ICRU clinical convention of `1.1` as a floor while
+showing distal-edge increases for McNamara, Wedenberg, McMahon, and
+Carabe-Fernandez-style models. FLASH delivery is represented by dose rates above
+`40 Gy/s`, oxygen depletion, and a normal-tissue sparing factor.
