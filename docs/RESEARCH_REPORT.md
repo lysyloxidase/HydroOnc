@@ -51,3 +51,16 @@ H-bond that can be disrupted by resistance mutations such as Y96D/S and H95Q/R.
 EGFR T790M is represented as simultaneous steric blocking and loss of the
 gefitinib/erlotinib gatekeeper H-bond, with osimertinib bypassing via C797
 covalency until C797S resistance.
+
+## Phase 6 Molecular H2 Therapy
+
+Saturated molecular hydrogen in water is represented as `1.57 mg/L`, about
+`0.78 mM`. The ROS module uses `k(H2 + OH) = 4.2e7 M^-1 s^-1` and
+`k(H2 + ONOO-) = 3.6e4 M^-1 s^-1`, while assigning negligible direct reaction
+with superoxide and hydrogen peroxide.
+
+The critical caveat is encoded directly: with physiological GSH around `5 mM`
+and `k(GSH + OH) ~= 1e10 M^-1 s^-1`, GSH dominates hydroxyl radical quenching by
+more than three orders of magnitude. H2 oncology effects are therefore modeled
+primarily through Nrf2/NF-kB/mitochondrial signaling and immune restoration of
+exhausted CD8+ T cells, including synergy with anti-PD-1 therapy.

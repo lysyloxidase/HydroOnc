@@ -20,3 +20,7 @@ ML dose prediction, and PPO-style automated planning interfaces.
 Phase 5 lives in `packages/hbond_onco`. It analyzes H-bond disruption in mutant
 p53, KRAS, and EGFR, then converts protein-ligand contacts into H-bond-aware
 graphs for affinity prediction and docking reward functions.
+
+Phase 6 lives in `packages/h2_therapy`. It models molecular hydrogen as a
+research-grade oncology adjuvant, explicitly separating weak stoichiometric ROS
+scavenging from stronger signaling and immune-restoration hypotheses.
