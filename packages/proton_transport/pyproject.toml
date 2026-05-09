@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hydroonc-proton-transport"
+version = "0.1.0"
+description = "Phase 2 proton transport layer for HydroOnc: Grotthuss hopping, QM/MM setup, constant-pH MD, H-bond and pKa analysis."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [
+  { name = "HydroOnc Contributors" }
+]
+dependencies = [
+  "numpy>=1.23"
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=7.4"
+]
+md = [
+  "openmm>=8.0",
+  "MDAnalysis>=2.6"
+]
+propka = [
+  "propka>=3.5"
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
