@@ -16,3 +16,7 @@ provides CEST-MRI pH mapping surfaces for later API and web visualization work.
 Phase 4 lives in `packages/proton_therapy`. It covers Bragg peak physics,
 spread-out Bragg peaks, LET/RBE modeling, FLASH dose-rate response, DVH metrics,
 ML dose prediction, and PPO-style automated planning interfaces.
+
+Phase 5 lives in `packages/hbond_onco`. It analyzes H-bond disruption in mutant
+p53, KRAS, and EGFR, then converts protein-ligand contacts into H-bond-aware
+graphs for affinity prediction and docking reward functions.

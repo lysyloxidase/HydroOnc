@@ -19,5 +19,6 @@ jobs:
           python -m pip install -e "packages/proton_transport[dev]"
           python -m pip install -e "packages/tumor_ph[dev]"
           python -m pip install -e "packages/proton_therapy[dev]"
+          python -m pip install -e "packages/hbond_onco[dev]"
       - name: Test
-        run: pytest packages/quantum packages/proton_transport packages/tumor_ph packages/proton_therapy
+        run: pytest packages/quantum packages/proton_transport packages/tumor_ph packages/proton_therapy packages/hbond_onco

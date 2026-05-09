@@ -38,3 +38,16 @@ The RBE module keeps the ICRU clinical convention of `1.1` as a floor while
 showing distal-edge increases for McNamara, Wedenberg, McMahon, and
 Carabe-Fernandez-style models. FLASH delivery is represented by dose rates above
 `40 Gy/s`, oxygen depletion, and a normal-tissue sparing factor.
+
+## Phase 5 H-Bond Oncology
+
+p53 is mutated in roughly half of human cancers, with hotspot residues including
+R175, G245, R248, R249, R273, and R282. HydroOnc models structural mutations as
+loss or rearrangement of stabilizing H-bond networks and contact mutations as
+loss of direct protein-DNA H-bonds.
+
+KRAS G12C inhibitors depend on the switch-II pocket network, including a His95
+H-bond that can be disrupted by resistance mutations such as Y96D/S and H95Q/R.
+EGFR T790M is represented as simultaneous steric blocking and loss of the
+gefitinib/erlotinib gatekeeper H-bond, with osimertinib bypassing via C797
+covalency until C797S resistance.
