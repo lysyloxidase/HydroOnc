@@ -21,5 +21,11 @@ jobs:
           python -m pip install -e "packages/proton_therapy[dev]"
           python -m pip install -e "packages/hbond_onco[dev]"
           python -m pip install -e "packages/h2_therapy[dev]"
+          python -m pip install -e "packages/ml_pipeline[dev]"
       - name: Test
-        run: pytest packages/quantum packages/proton_transport packages/tumor_ph packages/proton_therapy packages/hbond_onco packages/h2_therapy
+        run: pytest packages/quantum packages/proton_transport packages/tumor_ph packages/proton_therapy packages/hbond_onco packages/h2_therapy packages/ml_pipeline
+      - name: Quality
+        run: |
+          ruff check packages/ml_pipeline/src packages/ml_pipeline/tests
+          pyright
+          pytest packages/ml_pipeline --cov=hydroonc_pipeline --cov-fail-under=80

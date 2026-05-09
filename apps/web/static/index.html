@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>HydroOnc v1.0.0</title>
+    <style>
+      body { margin: 0; font-family: Inter, system-ui, sans-serif; color: #172026; background: #f7f8fb; }
+      main { padding: 28px; }
+      header, section, article { border: 1px solid #d9e0e7; border-radius: 8px; background: white; }
+      header { padding: 18px; display: flex; justify-content: space-between; gap: 18px; align-items: center; }
+      h1 { margin: 0; font-size: 28px; }
+      nav { display: flex; flex-wrap: wrap; gap: 8px; }
+      button { border: 1px solid #c8d2dc; background: #fff; border-radius: 6px; padding: 8px 10px; cursor: pointer; }
+      button.active { background: #172026; color: white; }
+      .grid { display: grid; grid-template-columns: minmax(280px, 1fr) minmax(280px, 1.3fr); gap: 16px; margin-top: 18px; }
+      article, section { padding: 16px; }
+      .metric { background: #f8fbff; border: 1px solid #d9e0e7; border-radius: 6px; padding: 10px; margin: 8px 0; }
+      canvas { width: 100%; height: 320px; border: 1px solid #d9e0e7; border-radius: 8px; background: #08111c; }
+      .caveat { border-left: 4px solid #b42318; background: #fff6f4; padding: 10px 12px; margin: 8px 0; }
+      @media (max-width: 780px) { .grid, header { grid-template-columns: 1fr; display: block; } nav { margin-top: 12px; } }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <div>
+          <h1>HydroOnc</h1>
+          <div>From Schrödinger to the clinic: hydrogen at every scale of cancer</div>
+        </div>
+        <nav id="nav"></nav>
+      </header>
+      <div class="grid">
+        <article>
+          <h2 id="title"></h2>
+          <div id="metrics"></div>
+          <h3>Caveats</h3>
+          <div id="caveats"></div>
+        </article>
+        <section>
+          <canvas id="viz" width="900" height="420" aria-label="HydroOnc visualization canvas"></canvas>
+        </section>
+      </div>
+    </main>
+    <script>
+      const pages = [
+        ["Quantum Explorer", ["1s spherical", "2p dumbbell", "3d multi-lobed", "Balmer Hα 656.28 nm"], []],
+        ["Proton Transport", ["Grotthuss hopping", "D_H+ 9.31e-5 cm²/s", "H-bond network"], []],
+        ["Tumor pH Dashboard", ["Warburg pH_e 6.7", "reaction-diffusion gradient", "CEST overlay"], []],
+        ["Proton Therapy", ["150 MeV peak 15.6 cm", "SOBP ±5%", "FLASH >40 Gy/s"], ["Variable RBE is not ICRU standard.", "FAST-01 was feasibility, not efficacy."]],
+        ["Oncoprotein H-Bonds", ["p53 R175H loses 4+ bonds", "KRAS His95 geometry", "GNN ΔG"], ["APR-246 Phase 3 failed."]],
+        ["H₂ Therapy", ["GSH dominates •OH quenching", "H₂ + anti-PD-1 synergy", "research-grade predictor"], ["H₂ selective scavenging is contested.", "H₂ trials are small, not Phase 3.", "Research platform, not clinical decision support."]]
+      ];
+      const nav = document.getElementById("nav");
+      const title = document.getElementById("title");
+      const metrics = document.getElementById("metrics");
+      const caveats = document.getElementById("caveats");
+      const ctx = document.getElementById("viz").getContext("2d");
+      let active = 0;
+      pages.forEach((page, i) => {
+        const button = document.createElement("button");
+        button.textContent = page[0];
+        button.onclick = () => render(i);
+        nav.appendChild(button);
+      });
+      function render(i) {
+        active = i;
+        [...nav.children].forEach((b, index) => b.className = index === i ? "active" : "");
+        title.textContent = pages[i][0];
+        metrics.innerHTML = pages[i][1].map(x => `<div class="metric">${x}</div>`).join("");
+        caveats.innerHTML = (pages[i][2].length ? pages[i][2] : ["No additional caveat beyond research-use status."]).map(x => `<div class="caveat">${x}</div>`).join("");
+        draw(i);
+      }
+      function draw(i) {
+        ctx.clearRect(0, 0, 900, 420);
+        for (let x = 0; x < 900; x += 12) {
+          const y = 220 - Math.sin((x / 80) + i) * (40 + i * 8);
+          ctx.fillStyle = `hsl(${190 + i * 22}, 70%, ${42 + (x % 48)}%)`;
+          ctx.fillRect(x, y, 10, Math.max(8, 380 - y));
+        }
+        ctx.fillStyle = "white";
+        ctx.font = "24px system-ui";
+        ctx.fillText(pages[i][0], 24, 42);
+      }
+      render(0);
+    </script>
+  </body>
+</html>

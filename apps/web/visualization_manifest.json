@@ -1,0 +1,11 @@
+{
+  "version": "1.0.0",
+  "pages": [
+    {"slug": "quantum", "title": "Quantum Explorer", "renders": ["1s", "2p", "3d"], "caveats": []},
+    {"slug": "proton-transport", "title": "Proton Transport", "renders": ["Grotthuss", "H-bond network", "pH gradient"], "caveats": []},
+    {"slug": "tumor-ph", "title": "Tumor pH Dashboard", "renders": ["Warburg", "reaction-diffusion", "CEST overlay"], "caveats": []},
+    {"slug": "proton-therapy", "title": "Proton Therapy", "renders": ["Bragg", "SOBP", "RBE", "FLASH"], "caveats": ["Variable RBE is not ICRU standard", "FAST-01 feasibility"]},
+    {"slug": "hbond", "title": "Oncoprotein H-Bonds", "renders": ["p53 R175H", "KRAS His95", "GNN affinity"], "caveats": ["APR-246 Phase 3 failed"]},
+    {"slug": "h2-therapy", "title": "H2 Therapy", "renders": ["ROS", "immune ODE", "clinical response"], "caveats": ["H2 scavenging contested", "not Phase 3"]}
+  ]
+}

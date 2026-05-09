@@ -64,3 +64,10 @@ and `k(GSH + OH) ~= 1e10 M^-1 s^-1`, GSH dominates hydroxyl radical quenching by
 more than three orders of magnitude. H2 oncology effects are therefore modeled
 primarily through Nrf2/NF-kB/mitochondrial signaling and immune restoration of
 exhausted CD8+ T cells, including synergy with anti-PD-1 therapy.
+
+## Phase 7 Unified Pipeline
+
+The final integration layer links the six scales through three concrete use
+cases: pH-targeted drug design, proton therapy plus immunotherapy, and H2 plus
+checkpoint inhibitor optimization. Reports carry stage-level metrics, caveats,
+and citation keys so every generated result remains visibly research-grade.

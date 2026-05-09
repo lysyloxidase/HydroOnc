@@ -1,0 +1,20 @@
+{
+  "include": ["packages/ml_pipeline/src/hydroonc_pipeline"],
+  "extraPaths": [
+    "packages/quantum/src",
+    "packages/proton_transport/src",
+    "packages/tumor_ph/src",
+    "packages/proton_therapy/src",
+    "packages/hbond_onco/src",
+    "packages/h2_therapy/src",
+    "packages/ml_pipeline/src"
+  ],
+  "venvPath": ".",
+  "venv": ".venv",
+  "typeCheckingMode": "strict",
+  "reportMissingTypeStubs": "none",
+  "reportUnknownMemberType": "none",
+  "reportUnknownVariableType": "none",
+  "reportUnknownArgumentType": "none",
+  "reportUnknownLambdaType": "none"
+}

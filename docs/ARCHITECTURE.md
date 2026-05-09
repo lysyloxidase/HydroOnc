@@ -24,3 +24,8 @@ graphs for affinity prediction and docking reward functions.
 Phase 6 lives in `packages/h2_therapy`. It models molecular hydrogen as a
 research-grade oncology adjuvant, explicitly separating weak stoichiometric ROS
 scavenging from stronger signaling and immune-restoration hypotheses.
+
+Phase 7 lives in `packages/ml_pipeline`. It connects the six domain packages
+through the `HydroOncPipeline`, exposes the `hydroonc` CLI, validates web
+visualization manifests, centralizes caveats/citations, and marks the v1.0.0
+research platform boundary.
