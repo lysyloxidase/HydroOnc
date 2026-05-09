@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hydroonc-quantum"
+version = "0.1.0"
+description = "Phase 1 quantum-mechanical foundation for HydroOnc: hydrogen atom, spectra, H2, TDSE, and orbital visualization."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [
+  { name = "HydroOnc Contributors" }
+]
+dependencies = [
+  "numpy>=1.23",
+  "scipy>=1.9"
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=7.4",
+  "pytest-cov>=4.1"
+]
+h2 = [
+  "pyscf>=2.4"
+]
+viz = [
+  "scikit-image>=0.20",
+  "plotly>=5.18"
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
